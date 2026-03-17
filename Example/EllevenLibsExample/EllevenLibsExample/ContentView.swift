@@ -9,6 +9,8 @@ import SwiftUI
 import EllevenLibs
 
 struct ContentView: View {
+    private let logger = ELogger(tag: "Example")
+
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "books.vertical")
@@ -19,6 +21,14 @@ struct ContentView: View {
             Text("Library Version: \(EllevenLibs.version)")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+
+            Button("Test Logger") {
+                logger.debug("Debug message from Example app")
+                logger.info("Info message from Example app")
+                logger.warning("Warning message from Example app")
+                logger.error("Error message from Example app")
+            }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
     }

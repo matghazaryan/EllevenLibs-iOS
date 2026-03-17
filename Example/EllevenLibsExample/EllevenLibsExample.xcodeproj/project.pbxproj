@@ -6,14 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		91D841472F6921D40012AAA7 /* EllevenLibs in Frameworks */ = {isa = PBXBuildFile; productRef = 91D841462F6921D40012AAA7 /* EllevenLibs */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		912E84E52F63306600A48D01 /* EllevenLibs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EllevenLibs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		912E84E52F63306600A48D01 /* EllevenLibsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EllevenLibsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		912E84E72F63306600A48D01 /* EllevenLibs */ = {
+		912E84E72F63306600A48D01 /* EllevenLibsExample */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EllevenLibs;
+			path = EllevenLibsExample;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91D841472F6921D40012AAA7 /* EllevenLibs in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +37,7 @@
 		912E84DC2F63306600A48D01 = {
 			isa = PBXGroup;
 			children = (
-				912E84E72F63306600A48D01 /* EllevenLibs */,
+				912E84E72F63306600A48D01 /* EllevenLibsExample */,
 				912E84E62F63306600A48D01 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +45,7 @@
 		912E84E62F63306600A48D01 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				912E84E52F63306600A48D01 /* EllevenLibs.app */,
+				912E84E52F63306600A48D01 /* EllevenLibsExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +53,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		912E84E42F63306600A48D01 /* EllevenLibs */ = {
+		912E84E42F63306600A48D01 /* EllevenLibsExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 912E84F02F63306700A48D01 /* Build configuration list for PBXNativeTarget "EllevenLibs" */;
+			buildConfigurationList = 912E84F02F63306700A48D01 /* Build configuration list for PBXNativeTarget "EllevenLibsExample" */;
 			buildPhases = (
 				912E84E12F63306600A48D01 /* Sources */,
 				912E84E22F63306600A48D01 /* Frameworks */,
@@ -61,13 +66,14 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				912E84E72F63306600A48D01 /* EllevenLibs */,
+				912E84E72F63306600A48D01 /* EllevenLibsExample */,
 			);
-			name = EllevenLibs;
+			name = EllevenLibsExample;
 			packageProductDependencies = (
+				91D841462F6921D40012AAA7 /* EllevenLibs */,
 			);
-			productName = EllevenLibs;
-			productReference = 912E84E52F63306600A48D01 /* EllevenLibs.app */;
+			productName = EllevenLibsExample;
+			productReference = 912E84E52F63306600A48D01 /* EllevenLibsExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +91,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 912E84E02F63306600A48D01 /* Build configuration list for PBXProject "EllevenLibs" */;
+			buildConfigurationList = 912E84E02F63306600A48D01 /* Build configuration list for PBXProject "EllevenLibsExample" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -94,12 +100,15 @@
 			);
 			mainGroup = 912E84DC2F63306600A48D01;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				91D841452F6921D40012AAA7 /* XCLocalSwiftPackageReference "../../../EllevenLibs-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 912E84E62F63306600A48D01 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				912E84E42F63306600A48D01 /* EllevenLibs */,
+				912E84E42F63306600A48D01 /* EllevenLibsExample */,
 			);
 		};
 /* End PBXProject section */
@@ -253,6 +262,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 39K9C5Y4HB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -266,7 +276,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellevenstudio.EllevenLibs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ellevenstudio.EllevenLibsExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -285,6 +295,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 39K9C5Y4HB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -298,7 +309,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellevenstudio.EllevenLibs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ellevenstudio.EllevenLibsExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -313,7 +324,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		912E84E02F63306600A48D01 /* Build configuration list for PBXProject "EllevenLibs" */ = {
+		912E84E02F63306600A48D01 /* Build configuration list for PBXProject "EllevenLibsExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				912E84EE2F63306700A48D01 /* Debug */,
@@ -322,7 +333,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		912E84F02F63306700A48D01 /* Build configuration list for PBXNativeTarget "EllevenLibs" */ = {
+		912E84F02F63306700A48D01 /* Build configuration list for PBXNativeTarget "EllevenLibsExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				912E84F12F63306700A48D01 /* Debug */,
@@ -332,6 +343,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		91D841452F6921D40012AAA7 /* XCLocalSwiftPackageReference "../../../EllevenLibs-iOS" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../../EllevenLibs-iOS";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		91D841462F6921D40012AAA7 /* EllevenLibs */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EllevenLibs;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 912E84DD2F63306600A48D01 /* Project object */;
 }
