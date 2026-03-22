@@ -1,0 +1,135 @@
+{
+  "identifier" : "E1AD0010-0001-0001-0001-000000000001",
+  "type" : "com.apple.storekit.testing",
+  "version" : 4,
+  "localizations" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1000000001",
+    "_developerTeamID" : "39K9C5Y4HB",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "setting" : "com.apple.storekit.testing.store-kit-error"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "E1AD0010-0001-0001-0001-000000000010",
+      "localizations" : [
+
+      ],
+      "name" : "Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "E1AD0010-0001-0001-0001-000000000011",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Monthly access to all premium features",
+              "displayName" : "Monthly Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ellevenstudio.example.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly Premium",
+          "subscriptionGroupID" : "E1AD0010-0001-0001-0001-000000000010",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "E1AD0010-0001-0001-0001-000000000012",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Yearly access to all premium features",
+              "displayName" : "Yearly Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ellevenstudio.example.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly Premium",
+          "subscriptionGroupID" : "E1AD0010-0001-0001-0001-000000000010",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "products" : [
+    {
+      "displayPrice" : "79.99",
+      "familyShareable" : false,
+      "internalID" : "E1AD0010-0001-0001-0001-000000000020",
+      "localizations" : [
+        {
+          "description" : "Lifetime access to all premium features",
+          "displayName" : "Lifetime Premium",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.ellevenstudio.example.lifetime",
+      "referenceName" : "Lifetime Premium",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "E1AD0010-0001-0001-0001-000000000030",
+      "localizations" : [
+        {
+          "description" : "Buy 100 coins",
+          "displayName" : "100 Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.ellevenstudio.example.coins100",
+      "referenceName" : "100 Coins",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "E1AD0010-0001-0001-0001-000000000031",
+      "localizations" : [
+        {
+          "description" : "Buy 500 coins",
+          "displayName" : "500 Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.ellevenstudio.example.coins500",
+      "referenceName" : "500 Coins",
+      "type" : "Consumable"
+    }
+  ]
+}

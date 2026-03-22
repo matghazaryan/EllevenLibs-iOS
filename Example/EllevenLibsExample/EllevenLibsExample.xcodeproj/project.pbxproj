@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		91D841472F6921D40012AAA7 /* EllevenLibs in Frameworks */ = {isa = PBXBuildFile; productRef = 91D841462F6921D40012AAA7 /* EllevenLibs */; };
+		E1AD00012F6D00010012AAA7 /* EAds in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00002F6D00010012AAA7 /* EAds */; };
+		E1AD00032F6D00010012AAA7 /* EStore in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00022F6D00010012AAA7 /* EStore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				91D841472F6921D40012AAA7 /* EllevenLibs in Frameworks */,
+				E1AD00012F6D00010012AAA7 /* EAds in Frameworks */,
+				E1AD00032F6D00010012AAA7 /* EStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +75,8 @@
 			name = EllevenLibsExample;
 			packageProductDependencies = (
 				91D841462F6921D40012AAA7 /* EllevenLibs */,
+				E1AD00002F6D00010012AAA7 /* EAds */,
+				E1AD00022F6D00010012AAA7 /* EStore */,
 			);
 			productName = EllevenLibsExample;
 			productReference = 912E84E52F63306600A48D01 /* EllevenLibsExample.app */;
@@ -266,6 +272,7 @@
 				DEVELOPMENT_TEAM = 39K9C5Y4HB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +306,7 @@
 				DEVELOPMENT_TEAM = 39K9C5Y4HB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -355,6 +363,14 @@
 		91D841462F6921D40012AAA7 /* EllevenLibs */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EllevenLibs;
+		};
+		E1AD00002F6D00010012AAA7 /* EAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EAds;
+		};
+		E1AD00022F6D00010012AAA7 /* EStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EStore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
