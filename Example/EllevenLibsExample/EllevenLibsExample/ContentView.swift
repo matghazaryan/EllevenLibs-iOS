@@ -11,7 +11,6 @@ import EAds
 import EStore
 
 struct ContentView: View {
-    private let logger = ELogger(tag: "Example")
     @ObservedObject private var store = EStore.shared
     @State private var showPaywall: Int = 0
 
@@ -26,16 +25,6 @@ struct ContentView: View {
                     LabeledContent("Coins (500)", value: "\(store.consumableBalance(for: "com.ellevenstudio.example.coins500"))")
                 }
 
-                // MARK: - Logger
-                Section("ELogger") {
-                    Button("Test All Log Levels") {
-                        logger.debug("Debug message from Example app")
-                        logger.info("Info message from Example app")
-                        logger.warning("Warning message from Example app")
-                        logger.error("Error message from Example app")
-                    }
-                }
-
                 // MARK: - Ads
                 Section("EAds - Banner") {
                     EAdsBanner()
@@ -48,7 +37,7 @@ struct ContentView: View {
                     }
                     Button("Show Rewarded Ad") {
                         EAdsRewarded.shared.show { reward in
-                            logger.info("Reward earned: \(reward.amount) \(reward.type)")
+                            print("Reward earned: \(reward.amount) \(reward.type)")
                         }
                     }
                     Button("Show Open App Ad") {
