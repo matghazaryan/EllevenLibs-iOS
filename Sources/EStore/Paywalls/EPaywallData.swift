@@ -22,7 +22,7 @@ internal class EPaywallData: ObservableObject {
         defer { isLoading = false }
         do {
             let result = try await EStore.shared.purchase(productId)
-            if result == .success {
+            if result.status == .success {
                 isPremium = EStore.shared.isPremium
                 onDismiss?()
             }

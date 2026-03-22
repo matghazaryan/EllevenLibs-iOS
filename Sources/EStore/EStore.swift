@@ -82,16 +82,28 @@ public final class EStore: ObservableObject {
                 saveTestPurchases()
                 updateTestPurchaseState()
             }
-            return .success
+            return EStorePurchaseResult(
+                status: .success,
+                productId: productId,
+                displayPrice: product.displayPrice,
+                price: product.price,
+                currencyCode: product.currencyCode,
+                type: product.type,
+                subscriptionPeriod: product.subscriptionPeriod,
+                trialPeriod: product.trialPeriod,
+                purchaseDate: Date(),
+                expirationDate: EStoreTestConfig.createTestPurchaseInfo(product: product).expirationDate,
+                transactionId: "\(UInt64(Date().timeIntervalSince1970 * 1000))"
+            )
         }
 
         guard let storeKitProduct = product.storeKitProduct else {
             throw EStoreError.productNotFound
         }
 
-        let result = try await storeKitProduct.purchase()
+        let skResult = try await storeKitProduct.purchase()
 
-        switch result {
+        switch skResult {
         case .success(let verification):
             if let transaction = try? verification.payloadValue {
                 await transaction.finish()
@@ -99,15 +111,27 @@ public final class EStore: ObservableObject {
                     EStoreConsumableManager.shared.increment(productId: productId, by: amount)
                 }
                 await refreshPurchaseStatus()
-                return .success
+                return EStorePurchaseResult(
+                    status: .success,
+                    productId: productId,
+                    displayPrice: product.displayPrice,
+                    price: product.price,
+                    currencyCode: product.currencyCode,
+                    type: product.type,
+                    subscriptionPeriod: product.subscriptionPeriod,
+                    trialPeriod: product.trialPeriod,
+                    purchaseDate: transaction.purchaseDate,
+                    expirationDate: transaction.expirationDate,
+                    transactionId: "\(transaction.id)"
+                )
             }
-            return .failed
+            return EStorePurchaseResult(status: .failed, productId: productId)
         case .userCancelled:
-            return .cancelled
+            return EStorePurchaseResult(status: .cancelled, productId: productId)
         case .pending:
-            return .pending
+            return EStorePurchaseResult(status: .pending, productId: productId)
         @unknown default:
-            return .failed
+            return EStorePurchaseResult(status: .failed, productId: productId)
         }
     }
 
@@ -305,7 +329,59 @@ public final class EStore: ObservableObject {
     }
 }
 
-public enum EStorePurchaseResult {
+/// Rich result returned after a purchase attempt. Contains all transaction data.
+public struct EStorePurchaseResult {
+    /// The outcome of the purchase.
+    public let status: EStorePurchaseStatus
+    /// The product ID that was purchased.
+    public let productId: String
+    /// Formatted price string (e.g., "$4.99").
+    public let displayPrice: String?
+    /// Raw price as Decimal.
+    public let price: Decimal?
+    /// Currency code (e.g., "USD").
+    public let currencyCode: String?
+    /// Product type (subscription, oneTime, consumable).
+    public let type: EStoreProductType?
+    /// Subscription period (e.g., "Monthly", "Yearly"). Nil for non-subscriptions.
+    public let subscriptionPeriod: String?
+    /// Trial period (e.g., "2 weeks"). Nil if no trial.
+    public let trialPeriod: String?
+    /// When the purchase was made.
+    public let purchaseDate: Date?
+    /// When the subscription expires. Nil for lifetime/consumable.
+    public let expirationDate: Date?
+    /// Transaction ID from the store.
+    public let transactionId: String?
+
+    init(
+        status: EStorePurchaseStatus,
+        productId: String,
+        displayPrice: String? = nil,
+        price: Decimal? = nil,
+        currencyCode: String? = nil,
+        type: EStoreProductType? = nil,
+        subscriptionPeriod: String? = nil,
+        trialPeriod: String? = nil,
+        purchaseDate: Date? = nil,
+        expirationDate: Date? = nil,
+        transactionId: String? = nil
+    ) {
+        self.status = status
+        self.productId = productId
+        self.displayPrice = displayPrice
+        self.price = price
+        self.currencyCode = currencyCode
+        self.type = type
+        self.subscriptionPeriod = subscriptionPeriod
+        self.trialPeriod = trialPeriod
+        self.purchaseDate = purchaseDate
+        self.expirationDate = expirationDate
+        self.transactionId = transactionId
+    }
+}
+
+public enum EStorePurchaseStatus {
     case success, cancelled, pending, failed
 }
 
