@@ -22,7 +22,7 @@ public final class EAdsRewarded: NSObject, @unchecked Sendable {
     /// Preloads a rewarded ad.
     public func load() {
         guard let adUnitId = EAds.shared.rewardedAdUnitId else { return }
-        RewardedAd.load(withAdUnitID: adUnitId, request: Request()) { [weak self] ad, error in
+        RewardedAd.load(with: adUnitId, request: Request()) { [weak self] ad, error in
             if let error = error {
                 print("[EAds] Rewarded ad failed to load: \(error.localizedDescription)")
                 return
@@ -47,7 +47,7 @@ public final class EAdsRewarded: NSObject, @unchecked Sendable {
             onDismiss?()
             return
         }
-        ad.present(fromRootViewController: rootVC) { [weak self] in
+        ad.present(from: rootVC) { [weak self] in
             let reward = ad.adReward
             self?.onReward?(EAdReward(amount: reward.amount.doubleValue, type: reward.type))
         }

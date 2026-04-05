@@ -26,7 +26,7 @@ public final class EAdsOpenApp: NSObject, @unchecked Sendable {
     public func load() {
         guard let adUnitId = EAds.shared.openAppAdUnitId else { return }
         guard appOpenAd == nil else { return } // Already loaded
-        AppOpenAd.load(withAdUnitID: adUnitId, request: Request()) { [weak self] ad, error in
+        AppOpenAd.load(with: adUnitId, request: Request()) { [weak self] ad, error in
             if let error = error {
                 print("[EAds] Open app ad failed to load: \(error.localizedDescription)")
                 return
@@ -69,7 +69,7 @@ public final class EAdsOpenApp: NSObject, @unchecked Sendable {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let rootVC = windowScene.windows.first?.rootViewController else { return }
         isShowingAd = true
-        ad.present(fromRootViewController: rootVC)
+        ad.present(from: rootVC)
     }
 
     private func isAdExpired() -> Bool {

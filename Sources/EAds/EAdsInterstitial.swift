@@ -19,7 +19,7 @@ public final class EAdsInterstitial: NSObject, @unchecked Sendable {
     /// Preloads an interstitial ad.
     public func load() {
         guard let adUnitId = EAds.shared.interstitialAdUnitId else { return }
-        InterstitialAd.load(withAdUnitID: adUnitId, request: Request()) { [weak self] ad, error in
+        InterstitialAd.load(with: adUnitId, request: Request()) { [weak self] ad, error in
             if let error = error {
                 print("[EAds] Interstitial failed to load: \(error.localizedDescription)")
                 return
@@ -41,7 +41,7 @@ public final class EAdsInterstitial: NSObject, @unchecked Sendable {
             onDismiss?()
             return
         }
-        ad.present(fromRootViewController: rootVC)
+        ad.present(from: rootVC)
     }
 }
 
