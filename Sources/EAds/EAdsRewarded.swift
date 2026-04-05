@@ -11,7 +11,7 @@ import GoogleMobileAds
 public final class EAdsRewarded: NSObject, @unchecked Sendable {
     public static let shared = EAdsRewarded()
 
-    private var rewardedAd: GADRewardedAd?
+    private var rewardedAd: RewardedAd?
     private var onReward: ((EAdReward) -> Void)?
     private var onDismiss: (() -> Void)?
 
@@ -22,7 +22,7 @@ public final class EAdsRewarded: NSObject, @unchecked Sendable {
     /// Preloads a rewarded ad.
     public func load() {
         guard let adUnitId = EAds.shared.rewardedAdUnitId else { return }
-        GADRewardedAd.load(withAdUnitID: adUnitId, request: GADRequest()) { [weak self] ad, error in
+        RewardedAd.load(withAdUnitID: adUnitId, request: Request()) { [weak self] ad, error in
             if let error = error {
                 print("[EAds] Rewarded ad failed to load: \(error.localizedDescription)")
                 return
@@ -54,15 +54,15 @@ public final class EAdsRewarded: NSObject, @unchecked Sendable {
     }
 }
 
-extension EAdsRewarded: GADFullScreenContentDelegate {
-    public func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+extension EAdsRewarded: FullScreenContentDelegate {
+    public func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         onDismiss?()
         onReward = nil
         onDismiss = nil
         load()
     }
 
-    public func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+    public func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("[EAds] Rewarded ad failed to present: \(error.localizedDescription)")
         onDismiss?()
         onReward = nil

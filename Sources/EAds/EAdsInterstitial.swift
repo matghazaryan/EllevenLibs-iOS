@@ -9,7 +9,7 @@ import GoogleMobileAds
 public final class EAdsInterstitial: NSObject, @unchecked Sendable {
     public static let shared = EAdsInterstitial()
 
-    private var interstitialAd: GADInterstitialAd?
+    private var interstitialAd: InterstitialAd?
     private var onDismiss: (() -> Void)?
 
     private override init() {
@@ -19,7 +19,7 @@ public final class EAdsInterstitial: NSObject, @unchecked Sendable {
     /// Preloads an interstitial ad.
     public func load() {
         guard let adUnitId = EAds.shared.interstitialAdUnitId else { return }
-        GADInterstitialAd.load(withAdUnitID: adUnitId, request: GADRequest()) { [weak self] ad, error in
+        InterstitialAd.load(withAdUnitID: adUnitId, request: Request()) { [weak self] ad, error in
             if let error = error {
                 print("[EAds] Interstitial failed to load: \(error.localizedDescription)")
                 return
@@ -45,14 +45,14 @@ public final class EAdsInterstitial: NSObject, @unchecked Sendable {
     }
 }
 
-extension EAdsInterstitial: GADFullScreenContentDelegate {
-    public func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+extension EAdsInterstitial: FullScreenContentDelegate {
+    public func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         onDismiss?()
         onDismiss = nil
         load() // Preload next
     }
 
-    public func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+    public func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("[EAds] Interstitial failed to present: \(error.localizedDescription)")
         onDismiss?()
         onDismiss = nil

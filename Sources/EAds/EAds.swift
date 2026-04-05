@@ -75,7 +75,7 @@ public final class EAds {
         instance.openAppAdUnitId = openApp.map { isDebug ? $0.debug : $0.production }
 
         #if canImport(GoogleMobileAds)
-        GADMobileAds.sharedInstance().start { _ in
+        MobileAds.shared.start { _ in
             instance.isInitialized = true
             if instance.interstitialAdUnitId != nil {
                 EAdsInterstitial.shared.load()

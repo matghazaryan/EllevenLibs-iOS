@@ -13,7 +13,7 @@ import GoogleMobileAds
 public final class EAdsOpenApp: NSObject, @unchecked Sendable {
     public static let shared = EAdsOpenApp()
 
-    private var appOpenAd: GADAppOpenAd?
+    private var appOpenAd: AppOpenAd?
     private var isShowingAd = false
     private var loadTime: Date?
     private var isAttachedToLifecycle = false
@@ -26,7 +26,7 @@ public final class EAdsOpenApp: NSObject, @unchecked Sendable {
     public func load() {
         guard let adUnitId = EAds.shared.openAppAdUnitId else { return }
         guard appOpenAd == nil else { return } // Already loaded
-        GADAppOpenAd.load(withAdUnitID: adUnitId, request: GADRequest()) { [weak self] ad, error in
+        AppOpenAd.load(withAdUnitID: adUnitId, request: Request()) { [weak self] ad, error in
             if let error = error {
                 print("[EAds] Open app ad failed to load: \(error.localizedDescription)")
                 return
@@ -78,14 +78,14 @@ public final class EAdsOpenApp: NSObject, @unchecked Sendable {
     }
 }
 
-extension EAdsOpenApp: GADFullScreenContentDelegate {
-    public func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+extension EAdsOpenApp: FullScreenContentDelegate {
+    public func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         isShowingAd = false
         appOpenAd = nil
         load()
     }
 
-    public func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+    public func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("[EAds] Open app ad failed to present: \(error.localizedDescription)")
         isShowingAd = false
         appOpenAd = nil

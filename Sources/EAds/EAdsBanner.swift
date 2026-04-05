@@ -8,34 +8,34 @@ import GoogleMobileAds
 ///     EAdsBanner()
 ///         .frame(height: 50)
 public struct EAdsBanner: UIViewRepresentable {
-    private let adSize: GADAdSize
+    private let adSize: AdSize
 
     /// Creates a banner ad view.
     /// - Parameter adSize: The banner size. Defaults to adaptive banner.
-    public init(adSize: GADAdSize = GADAdSizeBanner) {
+    public init(adSize: AdSize = AdSizeBanner) {
         self.adSize = adSize
     }
 
-    public func makeUIView(context: Context) -> GADBannerView {
-        let bannerView = GADBannerView(adSize: adSize)
+    public func makeUIView(context: Context) -> BannerView {
+        let bannerView = BannerView(adSize: adSize)
         bannerView.adUnitID = EAds.shared.bannerAdUnitId
         bannerView.delegate = context.coordinator
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
             bannerView.rootViewController = rootVC
         }
-        bannerView.load(GADRequest())
+        bannerView.load(Request())
         return bannerView
     }
 
-    public func updateUIView(_ uiView: GADBannerView, context: Context) {}
+    public func updateUIView(_ uiView: BannerView, context: Context) {}
 
     public func makeCoordinator() -> Coordinator {
         Coordinator()
     }
 
-    public class Coordinator: NSObject, GADBannerViewDelegate {
-        public func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+    public class Coordinator: NSObject, BannerViewDelegate {
+        public func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
             print("[EAds] Banner failed to load: \(error.localizedDescription)")
         }
     }
