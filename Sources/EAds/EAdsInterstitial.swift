@@ -1,3 +1,4 @@
+#if canImport(GoogleMobileAds)
 import UIKit
 import GoogleMobileAds
 
@@ -58,3 +59,19 @@ extension EAdsInterstitial: GADFullScreenContentDelegate {
         load()
     }
 }
+#else
+import Foundation
+
+/// Stub for platforms where Google Mobile Ads is not available.
+public final class EAdsInterstitial: @unchecked Sendable {
+    public static let shared = EAdsInterstitial()
+    private init() {}
+
+    public func load() {}
+
+    public func show(onDismiss: (() -> Void)? = nil) {
+        print("[EAds] Interstitial ads are not available on this platform.")
+        onDismiss?()
+    }
+}
+#endif

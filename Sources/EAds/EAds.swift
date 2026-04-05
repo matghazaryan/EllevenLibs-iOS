@@ -1,5 +1,8 @@
 import Foundation
+
+#if canImport(GoogleMobileAds)
 import GoogleMobileAds
+#endif
 
 /// Ad unit ID pair for debug and production environments.
 public struct EAdUnitId {
@@ -71,6 +74,7 @@ public final class EAds {
         instance.rewardedAdUnitId = rewarded.map { isDebug ? $0.debug : $0.production }
         instance.openAppAdUnitId = openApp.map { isDebug ? $0.debug : $0.production }
 
+        #if canImport(GoogleMobileAds)
         GADMobileAds.sharedInstance().start { _ in
             instance.isInitialized = true
             if instance.interstitialAdUnitId != nil {
@@ -83,5 +87,8 @@ public final class EAds {
                 EAdsOpenApp.shared.load()
             }
         }
+        #else
+        print("[EAds] Google Mobile Ads is not available on this platform.")
+        #endif
     }
 }

@@ -1,3 +1,4 @@
+#if canImport(GoogleMobileAds)
 import UIKit
 import GoogleMobileAds
 
@@ -69,6 +70,22 @@ extension EAdsRewarded: GADFullScreenContentDelegate {
         load()
     }
 }
+#else
+import Foundation
+
+/// Stub for platforms where Google Mobile Ads is not available.
+public final class EAdsRewarded: @unchecked Sendable {
+    public static let shared = EAdsRewarded()
+    private init() {}
+
+    public func load() {}
+
+    public func show(onReward: @escaping (EAdReward) -> Void, onDismiss: (() -> Void)? = nil) {
+        print("[EAds] Rewarded ads are not available on this platform.")
+        onDismiss?()
+    }
+}
+#endif
 
 /// Reward data from a rewarded ad.
 public struct EAdReward {

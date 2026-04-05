@@ -1,3 +1,4 @@
+#if canImport(GoogleMobileAds)
 import SwiftUI
 import GoogleMobileAds
 
@@ -39,3 +40,15 @@ public struct EAdsBanner: UIViewRepresentable {
         }
     }
 }
+#else
+import SwiftUI
+
+/// Placeholder for platforms where Google Mobile Ads is not available.
+public struct EAdsBanner: View {
+    public init() {}
+
+    public var body: some View {
+        EmptyView()
+    }
+}
+#endif

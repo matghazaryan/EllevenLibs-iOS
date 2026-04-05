@@ -1,3 +1,4 @@
+#if canImport(GoogleMobileAds)
 import UIKit
 import GoogleMobileAds
 
@@ -91,3 +92,19 @@ extension EAdsOpenApp: GADFullScreenContentDelegate {
         load()
     }
 }
+#else
+import Foundation
+
+/// Stub for platforms where Google Mobile Ads is not available.
+public final class EAdsOpenApp: @unchecked Sendable {
+    public static let shared = EAdsOpenApp()
+    private init() {}
+
+    public func load() {}
+    public func attachToAppLifecycle() {}
+
+    public func show() {
+        print("[EAds] Open app ads are not available on this platform.")
+    }
+}
+#endif

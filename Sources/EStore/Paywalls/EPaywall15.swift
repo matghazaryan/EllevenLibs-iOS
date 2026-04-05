@@ -112,6 +112,7 @@ public struct EPaywall15: View {
                             }
                         }
                         .padding(.horizontal)
+                        #if !os(tvOS)
                         .gesture(
                             DragGesture()
                                 .onChanged { value in
@@ -126,6 +127,7 @@ public struct EPaywall15: View {
                                     }
                                 }
                         )
+                        #endif
 
                         // CTA with shine sweep
                         EPaywall15ShineButton(
