@@ -32,6 +32,7 @@ public final class EStore: ObservableObject {
     @Published public private(set) var products: [EStoreProduct] = []
     @Published public private(set) var purchaseInfo: EStorePurchaseInfo?
     @Published public private(set) var allPurchaseInfos: [EStorePurchaseInfo] = []
+    @Published public private(set) var loadingState: EStoreLoadingState = .idle
 
     public private(set) var config: EStoreConfig?
     public var theme: EStoreTheme { config?.theme ?? .default }
@@ -189,10 +190,17 @@ public final class EStore: ObservableObject {
     // MARK: - Internal
 
     private func fetchProducts() async {
-        guard let config = config else { return }
+        guard let config = config else {
+            loadingState = .failed(EStoreError.notConfigured)
+            return
+        }
         let allIds = Set(config.products.map(\.id))
-        guard !allIds.isEmpty else { return }
+        guard !allIds.isEmpty else {
+            loadingState = .failed(EStoreError.noProductsConfigured)
+            return
+        }
 
+        loadingState = .loading
         print("[EStore] Fetching \(allIds.count) products: \(allIds)")
 
         do {
@@ -207,6 +215,7 @@ public final class EStore: ObservableObject {
                     isTestMode = true
                     products = testProducts
                     loadTestPurchases()
+                    loadingState = .loaded
                     print("[EStore] Test mode enabled with \(testProducts.count) products from .storekit file")
                     return
                 }
@@ -216,9 +225,17 @@ public final class EStore: ObservableObject {
                 guard let productConfig = config.products.first(where: { $0.id == product.id }) else { return nil }
                 return EStoreProduct(from: product, config: productConfig)
             }.sorted { $0.price < $1.price }
-            print("[EStore] Loaded \(products.count) products")
+
+            if products.isEmpty {
+                loadingState = .failed(EStoreError.productsLoadEmpty)
+                print("[EStore] WARNING: StoreKit returned products but none matched configured IDs")
+            } else {
+                loadingState = .loaded
+                print("[EStore] Loaded \(products.count) products")
+            }
         } catch {
             print("[EStore] Failed to fetch products: \(error.localizedDescription)")
+            loadingState = .failed(error)
             // Fallback on error in debug
             if EStoreTestConfig.isDebug {
                 let testProducts = EStoreTestConfig.loadTestProducts(config: config)
@@ -226,6 +243,7 @@ public final class EStore: ObservableObject {
                     isTestMode = true
                     products = testProducts
                     loadTestPurchases()
+                    loadingState = .loaded
                     print("[EStore] Test mode enabled (fallback) with \(testProducts.count) products")
                 }
             }
@@ -385,11 +403,37 @@ public enum EStorePurchaseStatus {
     case success, cancelled, pending, failed
 }
 
+public enum EStoreLoadingState: Equatable {
+    case idle
+    case loading
+    case loaded
+    case failed(Error)
+
+    public static func == (lhs: EStoreLoadingState, rhs: EStoreLoadingState) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle), (.loading, .loading), (.loaded, .loaded): return true
+        case (.failed(let a), .failed(let b)): return a.localizedDescription == b.localizedDescription
+        default: return false
+        }
+    }
+
+    public var error: Error? {
+        if case .failed(let error) = self { return error }
+        return nil
+    }
+
+    public var isFailed: Bool {
+        if case .failed = self { return true }
+        return false
+    }
+}
+
 public enum EStoreError: LocalizedError {
     case productNotFound
     case notConfigured
     case noProductsConfigured
     case insufficientBalance
+    case productsLoadEmpty
 
     public var errorDescription: String? {
         switch self {
@@ -397,6 +441,7 @@ public enum EStoreError: LocalizedError {
         case .notConfigured: return "EStore not configured. Call configure() first."
         case .noProductsConfigured: return "No products configured."
         case .insufficientBalance: return "Insufficient consumable balance."
+        case .productsLoadEmpty: return "Products loaded but none matched configured IDs. Check your product IDs in App Store Connect."
         }
     }
 }
