@@ -9,14 +9,41 @@ import SwiftUI
 import EllevenLibs
 import EAds
 import EStore
+import EGate
 
 struct ContentView: View {
     @ObservedObject private var store = EStore.shared
+    @ObservedObject private var gate = EGate.shared
     @State private var showPaywall: Int = 0
+    @State private var showGate = false
 
     var body: some View {
         NavigationStack {
             List {
+                // MARK: - EGate Test
+                Section("EGate - Play Limit Test") {
+                    LabeledContent("Plays", value: "\(gate.currentCount) / \(gate.config.maxPlays)")
+                    LabeledContent("Gate Active", value: gate.shouldShowGate ? "Yes" : "No")
+
+                    Button("Play Game (Record Play)") {
+                        let shouldShow = EGate.shared.recordPlay()
+                        if shouldShow {
+                            showGate = true
+                        }
+                    }
+                    .foregroundColor(.green)
+
+                    Button("Reset Play Count") {
+                        EGate.shared.reset()
+                    }
+                    .foregroundColor(.orange)
+
+                    Button("Show Gate Manually") {
+                        showGate = true
+                    }
+                    .foregroundColor(.blue)
+                }
+
                 // MARK: - Library Info
                 Section("Library Info") {
                     LabeledContent("Version", value: EllevenLibs.version)
@@ -112,6 +139,11 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("EllevenLibs Example")
+            .overlay {
+                if showGate {
+                    EGateView(onDismiss: { showGate = false })
+                }
+            }
             .fullScreenCover(isPresented: Binding(
                 get: { showPaywall > 0 },
                 set: { if !$0 { showPaywall = 0 } }

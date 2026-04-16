@@ -10,6 +10,7 @@
 		91D841472F6921D40012AAA7 /* EllevenLibs in Frameworks */ = {isa = PBXBuildFile; productRef = 91D841462F6921D40012AAA7 /* EllevenLibs */; };
 		E1AD00012F6D00010012AAA7 /* EAds in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00002F6D00010012AAA7 /* EAds */; };
 		E1AD00032F6D00010012AAA7 /* EStore in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00022F6D00010012AAA7 /* EStore */; };
+		E1AD00052F7000010012AAA7 /* EGate in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00042F7000010012AAA7 /* EGate */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 				91D841472F6921D40012AAA7 /* EllevenLibs in Frameworks */,
 				E1AD00012F6D00010012AAA7 /* EAds in Frameworks */,
 				E1AD00032F6D00010012AAA7 /* EStore in Frameworks */,
+				E1AD00052F7000010012AAA7 /* EGate in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +79,7 @@
 				91D841462F6921D40012AAA7 /* EllevenLibs */,
 				E1AD00002F6D00010012AAA7 /* EAds */,
 				E1AD00022F6D00010012AAA7 /* EStore */,
+				E1AD00042F7000010012AAA7 /* EGate */,
 			);
 			productName = EllevenLibsExample;
 			productReference = 912E84E52F63306600A48D01 /* EllevenLibsExample.app */;
@@ -375,6 +378,10 @@
 		E1AD00022F6D00010012AAA7 /* EStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EStore;
+		};
+		E1AD00042F7000010012AAA7 /* EGate */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EGate;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

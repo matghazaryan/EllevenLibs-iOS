@@ -8,6 +8,7 @@
 import SwiftUI
 import EAds
 import EStore
+import EGate
 
 @main
 struct EllevenLibsExampleApp: App {
@@ -79,6 +80,29 @@ struct EllevenLibsExampleApp: App {
                 )
             ))
         }
+        EGate.shared.configure(EGateConfig(
+            maxPlays: 5,
+            localizedTitles: [
+                "en": "Play Limit Reached",
+                "hy": "\u{053D}\u{0561}\u{0572}\u{0565}\u{0580}\u{056B} \u{057D}\u{0561}\u{0570}\u{0574}\u{0561}\u{0576}\u{0561}\u{0583}\u{0561}\u{056F}\u{0568} \u{057D}\u{057A}\u{0561}\u{057C}\u{057E}\u{0561}\u{056E} \u{0567}"
+            ],
+            localizedMessages: [
+                "en": "Upgrade to premium or watch an ad to continue playing.",
+                "hy": "\u{0541}\u{0565}\u{057C}\u{0584} \u{0562}\u{0561}\u{0566}\u{0561}\u{0576}\u{0561}\u{0563}\u{0580}\u{0561}\u{0576}\u{0564}\u{0561}\u{056F}\u{056B} \u{0569}\u{0561}\u{0580}\u{0574}\u{0561}\u{0581}\u{0574}\u{0561}\u{0576} \u{056F}\u{0561}\u{0574} \u{0564}\u{056B}\u{057F}\u{0565}\u{0584} \u{0563}\u{0578}\u{057E}\u{0561}\u{0566}\u{0564}\u{0589}"
+            ],
+            localizedPremiumButtonTexts: [
+                "en": "Go Premium",
+                "hy": "\u{054A}\u{0580}\u{0565}\u{0574}\u{056B}\u{0578}\u{0582}\u{0574}"
+            ],
+            localizedAdButtonTexts: [
+                "en": "Watch Ad to Continue",
+                "hy": "\u{0534}\u{056B}\u{057F}\u{0565}\u{0584} \u{0563}\u{0578}\u{057E}\u{0561}\u{0566}\u{0564}"
+            ],
+            localizedDismissButtonTexts: [
+                "en": "Later",
+                "hy": "\u{0540}\u{0565}\u{057F}\u{0578}"
+            ]
+        ))
     }
 
     var body: some Scene {
