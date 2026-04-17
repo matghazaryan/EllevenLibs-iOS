@@ -12,7 +12,16 @@ public struct EPaywall1: View {
     public var body: some View {
         let t = data.theme
         ZStack {
-            t.backgroundColor.ignoresSafeArea()
+            // Background: image if provided, otherwise solid color
+            if let bgImage = t.backgroundImageName {
+                Image(bgImage)
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            } else {
+                t.backgroundColor.ignoresSafeArea()
+            }
+
             VStack(spacing: 0) {
                 // Close
                 HStack { Spacer(); EPaywallCloseButton(theme: t) { data.onDismiss?() } }
@@ -26,10 +35,10 @@ public struct EPaywall1: View {
                                 .font(.system(size: 48))
                                 .foregroundColor(t.accentColor)
                             Text("Go Premium")
-                                .font(.largeTitle).bold()
+                                .font(t.font(size: 34, weight: .bold))
                                 .foregroundColor(t.textColor)
                             Text("Unlock all features")
-                                .font(.subheadline)
+                                .font(t.font(size: 15))
                                 .foregroundColor(t.secondaryTextColor)
                         }
                         .padding(.top, 20)
@@ -64,7 +73,25 @@ public struct EPaywall1: View {
                         .padding(.horizontal)
 
                         EPaywallRestoreButton(theme: t) { Task { await data.restore() } }
-                            .padding(.bottom, 20)
+
+                        // Terms & Privacy
+                        if t.hasLegalLinks {
+                            HStack(spacing: 16) {
+                                if let termsURL = t.termsURL {
+                                    Link("Terms of Use", destination: termsURL)
+                                        .font(t.font(size: 12))
+                                        .foregroundColor(t.secondaryTextColor)
+                                }
+                                if let privacyURL = t.privacyURL {
+                                    Link("Privacy Policy", destination: privacyURL)
+                                        .font(t.font(size: 12))
+                                        .foregroundColor(t.secondaryTextColor)
+                                }
+                            }
+                            .padding(.top, 8)
+                        }
+
+                        Spacer().frame(height: 20)
                     }
                 }
             }
