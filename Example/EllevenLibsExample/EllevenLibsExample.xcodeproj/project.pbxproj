@@ -11,6 +11,7 @@
 		E1AD00012F6D00010012AAA7 /* EAds in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00002F6D00010012AAA7 /* EAds */; };
 		E1AD00032F6D00010012AAA7 /* EStore in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00022F6D00010012AAA7 /* EStore */; };
 		E1AD00052F7000010012AAA7 /* EGate in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00042F7000010012AAA7 /* EGate */; };
+		E1AD00072F8000010012AAA7 /* ESupabaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E1AD00062F8000010012AAA7 /* ESupabaseAnalytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 				E1AD00012F6D00010012AAA7 /* EAds in Frameworks */,
 				E1AD00032F6D00010012AAA7 /* EStore in Frameworks */,
 				E1AD00052F7000010012AAA7 /* EGate in Frameworks */,
+				E1AD00072F8000010012AAA7 /* ESupabaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +82,7 @@
 				E1AD00002F6D00010012AAA7 /* EAds */,
 				E1AD00022F6D00010012AAA7 /* EStore */,
 				E1AD00042F7000010012AAA7 /* EGate */,
+				E1AD00062F8000010012AAA7 /* ESupabaseAnalytics */,
 			);
 			productName = EllevenLibsExample;
 			productReference = 912E84E52F63306600A48D01 /* EllevenLibsExample.app */;
@@ -382,6 +385,10 @@
 		E1AD00042F7000010012AAA7 /* EGate */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = EGate;
+		};
+		E1AD00062F8000010012AAA7 /* ESupabaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ESupabaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

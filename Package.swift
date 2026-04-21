@@ -29,6 +29,10 @@ let package = Package(
             name: "EGate",
             targets: ["EGate"]
         ),
+        .library(
+            name: "ESupabaseAnalytics",
+            targets: ["ESupabaseAnalytics"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads", from: "12.0.0"),
@@ -57,6 +61,10 @@ let package = Package(
             name: "EGate",
             dependencies: ["EStore", "EAds"],
             path: "Sources/EGate"
+        ),
+        .target(
+            name: "ESupabaseAnalytics",
+            path: "Sources/ESupabaseAnalytics"
         ),
         .testTarget(
             name: "EllevenLibsTests",

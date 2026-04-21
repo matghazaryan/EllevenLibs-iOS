@@ -9,6 +9,7 @@ import SwiftUI
 import EAds
 import EStore
 import EGate
+import ESupabaseAnalytics
 
 @main
 struct EllevenLibsExampleApp: App {
@@ -80,6 +81,19 @@ struct EllevenLibsExampleApp: App {
                 )
             ))
         }
+        // Replace with your own Supabase project URL + anon key. The consumer app
+        // is expected to pass the same credentials it already uses for its own
+        // Supabase calls so events land in the existing project.
+        if let url = URL(string: "https://your-project.supabase.co") {
+            ESupabaseAnalytics.shared.configure(
+                ESupabaseAnalyticsConfig(
+                    supabaseUrl: url,
+                    anonKey: "REPLACE_WITH_YOUR_ANON_KEY"
+                )
+            )
+            ESupabaseAnalytics.shared.track("app_open")
+        }
+
         EGate.shared.configure(EGateConfig(
             maxPlays: 5,
             localizedTitles: [
