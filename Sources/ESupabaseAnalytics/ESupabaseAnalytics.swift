@@ -32,14 +32,18 @@ public final class ESupabaseAnalytics {
     public private(set) var isConfigured = false
     public private(set) var isEnabled = true
 
-    private var config: ESupabaseAnalyticsConfig?
+    // `internal` (default) so the sister recorders in
+    // `Internal/SharedContext.swift` can read shared state without a second
+    // configure call. Public mutators (configure, setUserId, setAuthToken) are
+    // still the only writers — these are read-only from the recorders' side.
+    internal var config: ESupabaseAnalyticsConfig?
     private var uploader: Uploader?
-    private var session: SessionManager?
+    internal var session: SessionManager?
     private let queue = EventQueue()
     private var flushTask: Task<Void, Never>?
 
-    private var userId: String?
-    private var authToken: String?
+    internal var userId: String?
+    internal var authToken: String?
 
     #if canImport(UIKit)
     private var lifecycleObservers: [NSObjectProtocol] = []

@@ -83,6 +83,16 @@ final class SessionManager {
         return Roll(previousSessionId: existing, previousDurationSeconds: max(0, duration), newSessionId: fresh)
     }
 
+    /// Read the in-memory session id without rolling, refreshing, or touching
+    /// `lastEventAt`. Returns `nil` if no session has ever been started.
+    /// Used by the crash reporter when capturing a crash for a session that's
+    /// already ending — we want the crash tagged with the in-flight session id
+    /// without artificially extending its lifetime.
+    func peekSessionId() -> String? {
+        lock.lock(); defer { lock.unlock() }
+        return defaults.string(forKey: Key.sessionId)
+    }
+
     /// Call on every tracked event so the idle timer resets.
     func touchEvent(at now: Date = Date()) {
         lock.lock(); defer { lock.unlock() }
