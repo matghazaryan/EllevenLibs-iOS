@@ -23,7 +23,7 @@ struct Uploader {
         request.setValue(config.anonKey, forHTTPHeaderField: "apikey")
         request.setValue("Bearer \(authToken ?? config.anonKey)", forHTTPHeaderField: "Authorization")
         request.setValue("return=minimal", forHTTPHeaderField: "Prefer")
-        request.httpBody = try JSONSerialization.data(withJSONObject: events)
+        request.httpBody = try JSONSerialization.data(withJSONObject: Self.normalizeBatchKeys(events))
 
         let (data, response): (Data, URLResponse)
         do {
@@ -39,6 +39,23 @@ struct Uploader {
         guard (200...299).contains(http.statusCode) else {
             let body = String(data: data, encoding: .utf8)
             throw ESupabaseAnalyticsError.server(http.statusCode, body)
+        }
+    }
+
+    // PostgREST bulk insert (PGRST102) requires every row in the array to have
+    // the same keys. Optional columns (user_id, screen_name, properties, ...)
+    // are added per-event, so a batch can mix shapes — fill the gaps with
+    // NSNull so JSONSerialization writes `null`.
+    static func normalizeBatchKeys(_ events: [[String: Any]]) -> [[String: Any]] {
+        guard events.count > 1 else { return events }
+        var keys = Set<String>()
+        for ev in events { keys.formUnion(ev.keys) }
+        return events.map { ev in
+            var row = ev
+            for k in keys where row[k] == nil {
+                row[k] = NSNull()
+            }
+            return row
         }
     }
 }
