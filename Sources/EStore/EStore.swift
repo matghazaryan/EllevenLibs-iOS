@@ -112,6 +112,24 @@ public final class EStore: ObservableObject {
                     EStoreConsumableManager.shared.increment(productId: productId, by: amount)
                 }
                 await refreshPurchaseStatus()
+                // A verified successful purchase is proof of entitlement. Apple's
+                // `Transaction.currentEntitlements` can come back empty in the
+                // moment right after a purchase, which would leave `isPremium`
+                // false even though the user just paid. For non-consumables,
+                // seed the just-purchased transaction into our state directly so
+                // the UI updates immediately; the updates listener and later
+                // refreshes reconcile it.
+                if case .consumable = product.type {} else {
+                    let info = EStorePurchaseInfo(from: transaction, type: product.type)
+                    if !allPurchaseInfos.contains(where: { $0.transactionId == info.transactionId }) {
+                        allPurchaseInfos.append(info)
+                    }
+                    if purchaseInfo == nil { purchaseInfo = info }
+                    if !isPremium {
+                        isPremium = true
+                        UserDefaults.standard.set(true, forKey: premiumCacheKey)
+                    }
+                }
                 return EStorePurchaseResult(
                     status: .success,
                     productId: productId,
