@@ -343,7 +343,7 @@ public final class ESupabaseCrashReporter {
         let crashConfig = ESupabaseAnalyticsConfig(
             supabaseUrl: config.supabaseUrl,
             anonKey: config.anonKey,
-            tableName: "crashes",
+            tableName: "elleven_crashes",
             flushInterval: config.flushInterval,
             sessionTimeout: config.sessionTimeout
         )

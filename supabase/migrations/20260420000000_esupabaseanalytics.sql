@@ -2,11 +2,11 @@
 --
 -- Run this once in each Supabase project that will receive events. The table
 -- name below must match `ESupabaseAnalyticsConfig.tableName` in your app
--- (default `"analytics"`).
+-- (default `"elleven_analytics"`).
 
 create extension if not exists "pgcrypto";
 
-create table if not exists public.analytics (
+create table if not exists public.elleven_analytics (
   id              uuid primary key default gen_random_uuid(),
   occurred_at     timestamptz not null,
   received_at     timestamptz not null default now(),
@@ -27,23 +27,23 @@ create table if not exists public.analytics (
   properties      jsonb
 );
 
-create index if not exists analytics_device_occurred_idx
-  on public.analytics (device_id, occurred_at desc);
+create index if not exists elleven_analytics_device_occurred_idx
+  on public.elleven_analytics (device_id, occurred_at desc);
 
-create index if not exists analytics_user_occurred_idx
-  on public.analytics (user_id, occurred_at desc)
+create index if not exists elleven_analytics_user_occurred_idx
+  on public.elleven_analytics (user_id, occurred_at desc)
   where user_id is not null;
 
-create index if not exists analytics_event_occurred_idx
-  on public.analytics (event_name, occurred_at desc);
+create index if not exists elleven_analytics_event_occurred_idx
+  on public.elleven_analytics (event_name, occurred_at desc);
 
-alter table public.analytics enable row level security;
+alter table public.elleven_analytics enable row level security;
 
 -- anon + authenticated clients may insert; no SELECT / UPDATE / DELETE from the app.
 -- Read via the service role (dashboard, backend, warehouse).
-drop policy if exists "esupabaseanalytics_insert" on public.analytics;
+drop policy if exists "esupabaseanalytics_insert" on public.elleven_analytics;
 create policy "esupabaseanalytics_insert"
-  on public.analytics
+  on public.elleven_analytics
   for insert
   to anon, authenticated
   with check (true);

@@ -141,7 +141,7 @@ public final class ESupabaseRevenueRecorder {
         let revenueConfig = ESupabaseAnalyticsConfig(
             supabaseUrl: config.supabaseUrl,
             anonKey: config.anonKey,
-            tableName: "revenue",
+            tableName: "elleven_revenue",
             flushInterval: config.flushInterval,
             sessionTimeout: config.sessionTimeout
         )

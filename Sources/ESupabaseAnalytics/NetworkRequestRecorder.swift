@@ -164,7 +164,7 @@ public final class ESupabaseNetworkRecorder {
         let networkConfig = ESupabaseAnalyticsConfig(
             supabaseUrl: config.supabaseUrl,
             anonKey: config.anonKey,
-            tableName: "network_requests",
+            tableName: "elleven_network_requests",
             flushInterval: config.flushInterval,
             sessionTimeout: config.sessionTimeout
         )
