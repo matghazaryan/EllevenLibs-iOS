@@ -67,7 +67,34 @@ public final class EStore: ObservableObject {
     // MARK: - Purchase
 
     @discardableResult
-    public func purchase(_ productId: String) async throws -> EStorePurchaseResult {
+    /// Whether the App Store applied a free-trial offer to this specific
+    /// transaction.
+    ///
+    /// `Transaction.offer` carries the payment mode directly but is only
+    /// available from iOS 17.2. On earlier systems the transaction reports the
+    /// offer *type* only, so an introductory offer is cross-referenced against
+    /// the product's introductory offer to recover its payment mode.
+    private static func isFreeTrial(
+        transaction: Transaction,
+        storeKitProduct: Product
+    ) -> Bool {
+        if #available(iOS 17.2, macOS 14.2, *) {
+            guard let offer = transaction.offer else { return false }
+            return offer.paymentMode == .freeTrial
+        }
+        guard transaction.offerType == .introductory else { return false }
+        return storeKitProduct.subscription?.introductoryOffer?.paymentMode == .freeTrial
+    }
+
+    /// - Parameter appAccountToken: Your own account identifier for the buyer.
+    ///   Apple echoes it back in App Store Server Notifications, and it is the
+    ///   *only* way a server-side renewal or refund can be attributed to a
+    ///   user — without it the webhook receives a transaction it cannot map to
+    ///   an account. Must be a UUID; pass the Supabase user id.
+    public func purchase(
+        _ productId: String,
+        appAccountToken: UUID? = nil
+    ) async throws -> EStorePurchaseResult {
         guard let product = products.first(where: { $0.id == productId }) else {
             throw EStoreError.productNotFound
         }
@@ -92,9 +119,14 @@ public final class EStore: ObservableObject {
                 type: product.type,
                 subscriptionPeriod: product.subscriptionPeriod,
                 trialPeriod: product.trialPeriod,
+                // No real transaction exists in test mode, so simulate the
+                // first-purchase path: a trial-bearing product starts its trial.
+                isFreeTrial: product.trialPeriod != nil,
+                paidPrice: product.trialPeriod != nil ? 0 : product.price,
                 purchaseDate: Date(),
                 expirationDate: EStoreTestConfig.createTestPurchaseInfo(product: product).expirationDate,
-                transactionId: "\(UInt64(Date().timeIntervalSince1970 * 1000))"
+                transactionId: "\(UInt64(Date().timeIntervalSince1970 * 1000))",
+                environment: "Test"
             )
         }
 
@@ -102,7 +134,11 @@ public final class EStore: ObservableObject {
             throw EStoreError.productNotFound
         }
 
-        let skResult = try await storeKitProduct.purchase()
+        var purchaseOptions: Set<Product.PurchaseOption> = []
+        if let appAccountToken {
+            purchaseOptions.insert(.appAccountToken(appAccountToken))
+        }
+        let skResult = try await storeKitProduct.purchase(options: purchaseOptions)
 
         switch skResult {
         case .success(let verification):
@@ -139,9 +175,15 @@ public final class EStore: ObservableObject {
                     type: product.type,
                     subscriptionPeriod: product.subscriptionPeriod,
                     trialPeriod: product.trialPeriod,
+                    isFreeTrial: Self.isFreeTrial(
+                        transaction: transaction,
+                        storeKitProduct: storeKitProduct
+                    ),
+                    paidPrice: transaction.price,
                     purchaseDate: transaction.purchaseDate,
                     expirationDate: transaction.expirationDate,
-                    transactionId: "\(transaction.id)"
+                    transactionId: "\(transaction.id)",
+                    environment: transaction.environment.rawValue
                 )
             }
             return EStorePurchaseResult(status: .failed, productId: productId)
@@ -381,14 +423,41 @@ public struct EStorePurchaseResult {
     public let type: EStoreProductType?
     /// Subscription period (e.g., "Monthly", "Yearly"). Nil for non-subscriptions.
     public let subscriptionPeriod: String?
-    /// Trial period (e.g., "2 weeks"). Nil if no trial.
+    /// Trial period the *product* advertises (e.g., "2 weeks"). Nil if the
+    /// product has no introductory offer.
+    ///
+    /// - Important: This describes the product, **not** this transaction. A
+    ///   product that advertises a trial can still be bought at full price
+    ///   (the user was already past their trial, or ineligible). Use
+    ///   ``isFreeTrial`` to decide whether money actually changed hands.
     public let trialPeriod: String?
+    /// True only when the App Store applied a **free-trial** offer to *this*
+    /// transaction — i.e. the user was charged nothing right now.
+    ///
+    /// Derived from the transaction's applied offer, not from the product.
+    /// A paid introductory offer ("30% off the first year") is a real
+    /// purchase and reports `false` here.
+    public let isFreeTrial: Bool
+    /// What the store actually charged for this transaction, which differs
+    /// from ``price`` whenever an introductory or promotional offer applied.
+    /// Nil when the store did not report a price.
+    public let paidPrice: Decimal?
     /// When the purchase was made.
     public let purchaseDate: Date?
     /// When the subscription expires. Nil for lifetime/consumable.
     public let expirationDate: Date?
     /// Transaction ID from the store.
+    ///
+    /// - Important: Only unique within ``environment``. Xcode's local StoreKit
+    ///   store numbers transactions from 1 and restarts the counter whenever
+    ///   the test store is reset, so a debug transaction id will collide with
+    ///   both other debug ids and low-numbered ids from other environments.
+    ///   Namespace by ``environment`` before using this as a durable key.
     public let transactionId: String?
+    /// Which App Store issued the transaction — `"Production"`, `"Sandbox"`,
+    /// or `"Xcode"`. `"Test"` for simulated purchases in test mode. Nil when
+    /// the store did not report one.
+    public let environment: String?
 
     init(
         status: EStorePurchaseStatus,
@@ -399,9 +468,12 @@ public struct EStorePurchaseResult {
         type: EStoreProductType? = nil,
         subscriptionPeriod: String? = nil,
         trialPeriod: String? = nil,
+        isFreeTrial: Bool = false,
+        paidPrice: Decimal? = nil,
         purchaseDate: Date? = nil,
         expirationDate: Date? = nil,
-        transactionId: String? = nil
+        transactionId: String? = nil,
+        environment: String? = nil
     ) {
         self.status = status
         self.productId = productId
@@ -411,9 +483,12 @@ public struct EStorePurchaseResult {
         self.type = type
         self.subscriptionPeriod = subscriptionPeriod
         self.trialPeriod = trialPeriod
+        self.isFreeTrial = isFreeTrial
+        self.paidPrice = paidPrice
         self.purchaseDate = purchaseDate
         self.expirationDate = expirationDate
         self.transactionId = transactionId
+        self.environment = environment
     }
 }
 
