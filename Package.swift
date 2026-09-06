@@ -35,7 +35,11 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads", from: "12.0.0"),
+        // A range, not `from:` — `from: "12.0.0"` means `12.0.0..<13.0.0`, and SwiftPM
+        // applies a package's dependencies at the package level, so it capped AdMob at
+        // 12.x for every consuming app, including ones importing only ESupabaseAnalytics.
+        // A range lets each app pick its own AdMob major.
+        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads", "12.0.0"..<"14.0.0"),
     ],
     targets: [
         .target(
